@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neurohacks OS — El sistema de productividad para cerebros con TDAH</title>
+  <meta name="description" content="Neurohacks OS es la plantilla Notion con IA integrada para adultos con TDAH. Construida desde dentro por alguien con TDAH. Sin fricción. Sin sistemas que duran 3 días. 100% gratis." />
+  <meta property="og:title" content="Neurohacks OS — El sistema de productividad para cerebros con TDAH" />
+  <meta property="og:description" content="Plantilla Notion con IA para adultos con TDAH. Construida por alguien con TDAH. Gratis para siempre." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://neurohacks.ai" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Neurohacks OS — El sistema de productividad para cerebros con TDAH" />
+  <meta name="twitter:description" content="Plantilla Notion con IA para adultos con TDAH. Construida por alguien con TDAH. Gratis para siempre." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --bg-2: #fafafa;
+      --bg-3: #f3f4f6;
+      --text: #111111;
+      --text-2: #555555;
+      --text-3: #999999;
+      --accent: #4f46e5;
+      --accent-2: #eef2ff;
+      --accent-3: #c7d2fe;
+      --teal: #00b894;
+      --teal-2: rgba(0,184,148,0.1);
+      --border: #e5e7eb;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── UTILS ── */
+    .wrap { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+    .wrap-wide { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--text); color: #fff;
+      font-weight: 600; font-size: 15px;
+      padding: 13px 24px; border-radius: 100px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .btn:hover { opacity: 0.82; transform: translateY(-1px); }
+    .btn-accent { background: var(--accent); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: #ccc; background: var(--bg-2); }
+
+    .label {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-3);
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.24s; }
+    .d4 { transition-delay: 0.32s; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 1040px; margin: 0 auto;
+      padding: 0 24px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo {
+      font-size: 16px; font-weight: 800;
+      color: var(--text); text-decoration: none;
+      letter-spacing: -0.03em; flex-shrink: 0;
+    }
+    .logo span { color: var(--accent); }
+
+    /* Desktop nav links */
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px; font-weight: 500;
+      color: var(--text-2); text-decoration: none;
+      padding: 6px 12px; border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--bg-2); }
+    .nav-links a.active { color: var(--accent); background: var(--accent-2); font-weight: 600; }
+
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-cta { font-size: 13px; padding: 9px 18px; }
+
+    /* Hamburger (mobile) */
+    .hamburger {
+      display: none;
+      flex-direction: column; gap: 5px;
+      background: none; border: none;
+      cursor: pointer; padding: 6px;
+      z-index: 300;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
+      transition: transform 0.25s, opacity 0.2s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile menu overlay */
+    .mobile-menu {
+      display: none;
+      position: fixed; inset: 0; z-index: 150;
+      background: var(--bg);
+      padding: 80px 32px 40px;
+      flex-direction: column; gap: 8px;
+      overflow-y: auto;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 22px; font-weight: 700;
+      color: var(--text); text-decoration: none;
+      letter-spacing: -0.02em;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu .m-cta {
+      margin-top: 24px;
+      background: var(--accent); color: #fff;
+      border-radius: 100px; padding: 16px 24px;
+      text-align: center; font-size: 16px; border-bottom: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    /* ── BACK TO TOP ── */
+    #back-top {
+      position: fixed; bottom: 28px; right: 24px; z-index: 100;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--text); color: #fff;
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      opacity: 0; pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.25s, transform 0.25s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+    #back-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    #back-top:hover { background: var(--accent); }
+
+    /* ── MOBILE STICKY BAR ── */
+    #mobile-bar {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 101;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    }
+    #mobile-bar a {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--accent); color: #fff;
+      font-weight: 700; font-size: 15px;
+      padding: 13px 20px; border-radius: 10px;
+      text-decoration: none; letter-spacing: -0.01em;
+      width: 100%;
+    }
+    @media (max-width: 768px) {
+      #mobile-bar { display: block; }
+      #back-top { bottom: 80px; }
+    }
+
+    /* ── HERO ── */
+    .hero { padding: 96px 0 0; text-align: center; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; color: var(--text-3);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: inline-block;
+      width: 24px; height: 1px; background: var(--border);
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px); font-weight: 900;
+      line-height: 1.08; letter-spacing: -0.04em;
+      color: var(--text); margin-bottom: 20px;
+    }
+    .hero h1 i { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px); color: var(--text-2);
+      max-width: 520px; margin: 0 auto 36px;
+      line-height: 1.6; font-weight: 400;
+    }
+    .hero-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .hero-fine { margin-top: 14px; font-size: 13px; color: var(--text-3); }
+
+    /* ── STATS ── */
+    .stats-bar {
+      display: flex; justify-content: center;
+      gap: 1px; background: #fff;
+      border-top: 1px solid #fff;
+      border-bottom: 1px solid #fff;
+      margin-top: 64px;
+    }
+    .stat-cell {
+      background: #fff; padding: 36px 40px; text-align: center; flex: 0 0 auto;
+    }
+    @media (max-width: 700px) {
+      .stats-bar { flex-direction: column; }
+      .stat-cell { padding: 28px 24px; }
+    }
+    .stat-num {
+      font-size: clamp(32px, 5vw, 48px); font-weight: 900;
+      letter-spacing: -0.04em; color: var(--accent); line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-desc { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    @media (max-width: 560px) {
+      .stats-bar { grid-template-columns: 1fr; }
+    }
+
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ── SECTIONS ── */
+    .section { padding: 80px 0; }
+    .section-head { text-align: center; margin-bottom: 56px; }
+    .section-head .label { margin-bottom: 14px; display: block; }
+    .section-head h2 {
+      font-size: clamp(26px, 4vw, 40px); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px;
+    }
+    .section-head p {
+      font-size: 17px; color: var(--text-2);
+      max-width: 460px; margin: 0 auto; line-height: 1.6;
+    }
+
+    /* ── TIRED SECTION ── */
+    :root { --ih: 58px; }
+    @media (max-width: 640px) { :root { --ih: 40px; } }
+
+    .tired {
+      background: #fff;
+      padding: 80px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .tired-inner {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0;
+    }
+    .tired-label {
+      font-size: clamp(18px, 3vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--text);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tired-slot {
+      height: calc(var(--ih) * 5);
+      overflow: hidden;
+      flex-shrink: 1;
+      min-width: 0;
+      -webkit-mask-image: linear-gradient(to bottom,
+        transparent 0%,
+        black 25%,
+        black 75%,
+        transparent 100%);
+      mask-image: linear-gradient(to bottom,
+        transparent 0%,
+        black 25%,
+        black 75%,
+        transparent 100%);
+    }
+    .tired-track {
+      display: flex;
+      flex-direction: column;
+      will-change: transform;
+    }
+    .tired-item {
+      height: var(--ih);
+      display: flex;
+      align-items: center;
+      font-size: clamp(18px, 3vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: #c8c8c8;
+      white-space: nowrap;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .tired-item.is-active {
+      background: linear-gradient(90deg, #00b894 0%, #4f46e5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .tired-q {
+      font-size: clamp(18px, 3vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      flex-shrink: 0;
+      align-self: center;
+    }
+    @media (max-width: 640px) {
+      .tired-inner { gap: 8px; padding: 0; }
+    }
+
+    /* ── PROBLEM LIST ── */
+    .problem { background: var(--bg-2); }
+    .problem-statement {
+      font-size: clamp(20px, 3vw, 30px); font-weight: 700;
+      letter-spacing: -0.03em; line-height: 1.35;
+      text-align: center; margin-bottom: 48px;
+    }
+    .pain-items { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--border); }
+    .pain-item {
+      display: flex; align-items: center; gap: 20px;
+      padding: 18px 4px;
+      border-bottom: 1px solid var(--border);
+      background: transparent;
+      font-size: 16px; font-weight: 500;
+    }
+    .pain-item:hover { color: var(--accent); transition: color 0.15s; }
+    .pain-num {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      color: var(--text-3); flex-shrink: 0; width: 28px;
+    }
+
+    /* ── CYCLE ── */
+    .cycle-title {
+      font-size: clamp(22px, 3vw, 34px); font-weight: 800;
+      letter-spacing: -0.03em; text-align: center;
+      margin-bottom: 48px; line-height: 1.2;
+    }
+    .cycle-cards {
+      display: flex; align-items: flex-start;
+      position: relative; margin-bottom: 40px;
+    }
+    .cycle-cards::before {
+      content: ''; position: absolute;
+      top: 33px; left: 5%; right: 5%; height: 1px;
+      background: #d1d5db; z-index: 0;
+    }
+    .cycle-card {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; text-align: center;
+      padding: 0 16px; position: relative; z-index: 1;
+    }
+    .cc-ring {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: conic-gradient(from 180deg, #e8405a, #7c3aed 50%, #e8405a);
+      padding: 2.5px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+    }
+    .cc-icon {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: #111118; display: flex; align-items: center; justify-content: center;
+    }
+    .cc-icon svg { width: 26px; height: 26px; color: #fff; stroke: #fff; }
+    .cc-day { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); margin-bottom: 5px; }
+    .cc-desc { font-size: 12px; color: var(--text-2); line-height: 1.4; }
+    .cycle-repeat {
+      text-align: center; font-size: 18px; font-weight: 700;
+      color: var(--text-3); margin-bottom: 40px; letter-spacing: -0.01em;
+    }
+    .cycle-pivot {
+      text-align: center; font-size: clamp(18px, 2.5vw, 24px);
+      font-weight: 700; letter-spacing: -0.02em; line-height: 1.35; margin-bottom: 28px;
+    }
+    .cycle-pivot em { font-style: normal; color: var(--accent); }
+    @media (max-width: 640px) {
+      .cycle-cards { flex-wrap: wrap; gap: 28px 0; }
+      .cycle-cards::before { display: none; }
+      .cycle-card { flex: 0 0 50%; }
+      .cycle-card.hide-mobile { display: none; }
+    }
+
+    /* ── PAIN CARDS (diagnosis) ── */
+    .diag-bg { background: var(--bg-2); }
+    .diag-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+    }
+    .diag-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    @media (max-width: 900px) {
+      .diag-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .diag-grid { grid-template-columns: 1fr; }
+    }
+
+    .pcard {
+      background: var(--bg);
+      padding: 22px 20px;
+      cursor: pointer;
+      transition: background 0.18s;
+      position: relative;
+    }
+    .pcard:hover { background: var(--bg-2); }
+    .pcard.open { background: var(--bg-2); }
+
+    .pcard-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 10px; margin-bottom: 10px;
+    }
+    .pcard-left { display: flex; align-items: flex-start; gap: 10px; }
+    .pcard-ico { display: none; }
+    .pcard-num {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 3px;
+    }
+    .pcard-h {
+      font-size: 15px; font-weight: 700;
+      letter-spacing: -0.01em; color: var(--text); line-height: 1.2;
+    }
+    .pcard-toggle {
+      flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+      border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-3); font-size: 16px;
+      transition: border-color 0.2s, color 0.2s, transform 0.25s;
+      margin-top: 2px; background: var(--bg);
+    }
+    .pcard.open .pcard-toggle {
+      border-color: var(--teal); color: var(--teal); transform: rotate(45deg);
+    }
+    .pcard-preview {
+      font-size: 13px; color: var(--text-2); line-height: 1.6;
+    }
+
+    /* Expanded */
+    .pcard-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1);
+    }
+    .pcard-body.open { max-height: 700px; }
+    .pcard-inner {
+      padding-top: 16px; border-top: 1px solid var(--border); margin-top: 14px;
+    }
+    .sol-tag {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); border: 1px solid rgba(0,184,148,0.25);
+      background: var(--teal-2); padding: 3px 10px;
+      border-radius: 4px; margin-bottom: 10px;
+    }
+    .sol-tag-purple {
+      color: var(--accent);
+      border-color: var(--accent-3);
+      background: var(--accent-2);
+    }
+    .sol-h {
+      font-size: 13px; font-weight: 700; letter-spacing: -0.01em;
+      text-transform: uppercase; color: var(--text); margin-bottom: 6px;
+    }
+    .sol-desc {
+      font-size: 13px; color: var(--text-2); line-height: 1.7; margin-bottom: 12px;
+    }
+    .sol-list {
+      list-style: none; display: flex; flex-direction: column; gap: 6px;
+    }
+    .sol-list li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; color: var(--text); line-height: 1.5;
+    }
+    .sol-list li::before {
+      content: '';
+      display: inline-block; flex-shrink: 0;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--teal); margin-top: 7px;
+    }
+    .sol-note {
+      margin-top: 12px; font-size: 12px; color: var(--accent);
+      border-left: 2px solid var(--accent-3);
+      padding-left: 10px; line-height: 1.6;
+    }
+
+    /* Only show 9th card on desktop */
+    .pcard-desktop-only {
+      display: block;
+    }
+    @media (max-width: 560px) {
+      .pcard-desktop-only { display: none; }
+    }
+
+    /* ── FEATURES ── */
+    .features-bg { background: var(--bg-2); }
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .feat {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px 24px;
+      transition: box-shadow 0.2s;
+    }
+    .feat:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+    .feat-icon { width: 32px; height: 32px; margin-bottom: 16px; display: block; color: var(--accent); }
+    .feat h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.015em; }
+    .feat p { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+    /* ── HOW ── */
+    .steps { display: flex; flex-direction: column; }
+    .step {
+      display: flex; gap: 20px;
+      padding: 28px 0; border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-n {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--text); color: #fff;
+      font-weight: 700; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.015em; }
+    .step p { font-size: 15px; color: var(--text-2); line-height: 1.6; }
+
+    /* ── TESTIMONIALS ── */
+    .testi-bg { background: var(--bg-2); }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;
+    }
+    .testi {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px;
+    }
+    .testi-stars { font-size: 13px; color: #f59e0b; margin-bottom: 12px; letter-spacing: 2px; }
+    .testi-quote { font-size: 15px; line-height: 1.65; color: var(--text); margin-bottom: 18px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 10px; }
+    .testi-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--accent-2); color: var(--accent);
+      font-weight: 700; font-size: 13px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .testi-name { font-size: 13px; font-weight: 700; }
+    .testi-bio { font-size: 12px; color: var(--text-3); }
+
+    /* ── LEAD MAGNET CTA ── */
+    .cta-section {
+      background: #07070f;
+      padding: 72px 0;
+      position: relative; overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+    .cta-glow-1 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(79,70,229,0.15) 0%, transparent 65%);
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+    }
+    .cta-glow-2 {
+      width: 260px; height: 260px;
+      background: radial-gradient(circle, rgba(79,70,229,0.08) 0%, transparent 65%);
+      top: 20%; left: 65%;
+    }
+    .cta-inner {
+      max-width: 580px; margin: 0 auto;
+      background: rgba(255,255,255,0.03);
+      border: 0.5px solid rgba(79,70,229,0.25);
+      border-radius: var(--radius);
+      padding: 44px 40px;
+      text-align: center;
+      position: relative;
+    }
+    .cta-inner::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      background: var(--accent);
+    }
+    .cta-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: #a5b4fc; margin-bottom: 20px;
+    }
+    .cta-title {
+      font-size: clamp(28px, 5vw, 44px); font-weight: 900;
+      letter-spacing: -0.04em; line-height: 1.1;
+      color: #eae8f5; margin-bottom: 16px;
+    }
+    .cta-body {
+      font-size: 16px; color: #9896ad; line-height: 1.7;
+      margin-bottom: 24px; font-weight: 400;
+    }
+    .cta-features {
+      list-style: none; text-align: left; margin-bottom: 28px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    @media (max-width: 520px) { .cta-features { grid-template-columns: 1fr; } }
+    .cta-features li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 14px; color: #eae8f5; line-height: 1.5;
+    }
+    .cta-features li::before {
+      content: '✓'; color: #a5b4fc; font-weight: 700;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .cta-free-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #a5b4fc; border: 1px solid rgba(79,70,229,0.35);
+      background: rgba(79,70,229,0.08);
+      padding: 4px 14px; border-radius: 100px; margin-bottom: 20px;
+    }
+    .btn-teal {
+      background: var(--accent); color: #fff;
+      font-size: 16px; padding: 15px 32px; border-radius: 100px;
+      font-weight: 700; letter-spacing: -0.01em;
+    }
+    .btn-teal:hover { background: #4338ca; opacity: 1; }
+    .btn-dark-outline {
+      background: transparent; color: #9896ad;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 15px; padding: 14px 28px; border-radius: 4px;
+    }
+    .btn-dark-outline:hover { color: #eae8f5; border-color: rgba(255,255,255,0.3); opacity: 1; transform: none; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .cta-fine { margin-top: 16px; font-size: 13px; color: #555; }
+
+    /* Notion icon in buttons */
+    .btn-notion-icon {
+      width: 18px; height: 18px; flex-shrink: 0;
+    }
+
+    /* ── FAQ (2 columns on desktop) ── */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 40px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .faq-grid { grid-template-columns: 1fr; gap: 0; }
+    }
+    .faq-col { display: flex; flex-direction: column; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    /* On desktop the second column also needs a top border */
+    @media (min-width: 721px) {
+      .faq-col:nth-child(2) .faq-item:first-child { border-top: 1px solid var(--border); }
+    }
+    .faq-btn {
+      width: 100%; background: none; border: none;
+      padding: 18px 0; text-align: left;
+      font-size: 15px; font-weight: 600;
+      cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      gap: 14px; color: var(--text); font-family: inherit; letter-spacing: -0.01em;
+    }
+    .faq-icon {
+      font-size: 18px; color: var(--text-3); flex-shrink: 0; line-height: 1;
+      transition: transform 0.25s, color 0.2s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--text); }
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.25s;
+    }
+    .faq-item.open .faq-answer { max-height: 600px; padding-bottom: 18px; }
+    .faq-answer p { font-size: 14px; color: var(--text-2); line-height: 1.7; }
+    .faq-answer p + p { margin-top: 10px; }
+    .faq-answer ul { margin-top: 10px; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+    .faq-answer ul li { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+    /* ── FINAL CTA ── */
+    .final { background: var(--text); color: #fff; padding: 80px 0; text-align: center; }
+    .final h2 {
+      font-size: clamp(26px, 4.5vw, 48px); font-weight: 900;
+      letter-spacing: -0.04em; line-height: 1.12; margin-bottom: 14px;
+    }
+    .final p { font-size: 17px; color: #aaa; margin-bottom: 36px; }
+    .final .btn { background: #fff; color: var(--text); }
+    .final .btn:hover { background: #f0f0f0; }
+    .final-fine { margin-top: 14px; font-size: 13px; color: #666; }
+
+    /* ── FOOTER ── */
+    footer { padding: 40px 0; border-top: 1px solid var(--border); }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--text-3); text-decoration: none; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy { font-size: 13px; color: var(--text-3); }
+
+    @media (max-width: 600px) {
+      .hero { padding: 72px 0 60px; }
+      .section { padding: 64px 0; }
+      .price-card { padding: 40px 24px; }
+      .price-num { font-size: 56px; }
+      .footer-inner { justify-content: center; text-align: center; }
+    }
+
+    /* ── DISCORD CTA ── */
+    .cta-discord { margin-top: 24px; }
+    .cta-discord-divider {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #555; text-align: center;
+      margin-bottom: 14px; position: relative;
+    }
+    .cta-discord-divider::before, .cta-discord-divider::after {
+      content: ''; position: absolute; top: 50%;
+      width: 38%; height: 1px; background: rgba(255,255,255,0.08);
+    }
+    .cta-discord-divider::before { left: 0; }
+    .cta-discord-divider::after { right: 0; }
+    .cta-discord-box {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: rgba(88,101,242,0.08);
+      border: 1px solid rgba(88,101,242,0.25);
+      border-radius: var(--radius-sm); padding: 16px;
+    }
+    .cta-discord-btn {
+      flex-shrink: 0; align-self: center;
+      background: #5865F2; color: #fff;
+      font-size: 13px; font-weight: 700;
+      padding: 8px 16px; border-radius: 6px;
+      text-decoration: none; white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+    .cta-discord-btn:hover { opacity: 0.85; }
+    @media (max-width: 480px) {
+      .cta-discord-box { flex-wrap: wrap; }
+      .cta-discord-btn { width: 100%; text-align: center; }
+    }
+
+    /* ── FOUNDER ── */
+    .founder-section {
+      background: #0a0a0f;
+      display: grid;
+      grid-template-columns: 3fr 1.4fr;
+      overflow: hidden;
+      max-width: 1040px;
+      width: calc(100% - 48px);
+      margin: 0 auto;
+      border-radius: 20px;
+    }
+    .founder-photo {
+      position: relative; overflow: hidden;
+      height: 100%;
+      min-height: 420px;
+    }
+    .founder-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: 20% top;
+      display: block; filter: brightness(0.92);
+    }
+    .founder-photo::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to left, transparent 60%, #0a0a0f 100%);
+    }
+    .founder-content {
+      padding: 64px 52px 64px 40px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .founder-tag {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 28px;
+    }
+    .founder-quote {
+      font-size: clamp(16px, 1.8vw, 19px);
+      font-weight: 400; font-style: italic; line-height: 1.7;
+      color: #e8e6f5; letter-spacing: -0.01em;
+      margin-bottom: 24px; quotes: none;
+      border-left: 2px solid var(--accent); padding-left: 20px;
+    }
+    .founder-body {
+      font-size: 15px; color: #888; line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .founder-body strong { color: #bbb; font-weight: 500; }
+    .founder-creds {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
+    }
+    .founder-creds span {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+      color: #666; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 4px 12px; border-radius: 100px;
+    }
+    .founder-name {
+      font-size: 14px; font-weight: 700; color: #aaa;
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 768px) {
+      .founder-section { grid-template-columns: 1fr; }
+      .founder-photo { height: 300px; }
+      .founder-photo::after {
+        background: linear-gradient(to bottom, transparent 50%, #0a0a0f 100%);
+      }
+      .founder-content { padding: 40px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BACK TO TOP -->
+<button id="back-top" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MOBILE STICKY BAR -->
+<div id="mobile-bar">
+  <a href="#cta"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:0.9"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.047.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.447-.093-1.961-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.446-1.632z"/></svg>Obtener Neurohacks OS — gratis</a>
+</div>
+
+<!-- MOBILE MENU OVERLAY -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#diagnosis" onclick="closeMobile()">El sistema</a>
+  <a href="#how" onclick="closeMobile()">Cómo funciona</a>
+  <a href="#testimonios" onclick="closeMobile()">Testimonios</a>
+  <a href="#cta" onclick="closeMobile()">Comunidad</a>
+  <a href="#faq" onclick="closeMobile()">FAQ</a>
+  <a href="#cta" class="m-cta" onclick="closeMobile()"><svg style="width:18px;height:18px;flex-shrink:0" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.047.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.447-.093-1.961-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.446-1.632z"/></svg>Obtener la plantilla gratis</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" aria-label="NeuroHacks OS">
+      <img src="neurohacks-logo.svg" alt="NeuroHacks OS" height="30" style="display:block;" />
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#diagnosis">El sistema</a></li>
+      <li><a href="#how">Cómo funciona</a></li>
+      <li><a href="#testimonios">Testimonios</a></li>
+      <li><a href="#cta">Comunidad</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="#cta" class="btn btn-accent nav-cta"><svg class="btn-notion-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.047.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.447-.093-1.961-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.446-1.632z"/></svg>Obtener la plantilla gratis</a>
+      <button class="hamburger" id="hamburger" aria-label="Menú" onclick="toggleMobile()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-eyebrow reveal">Tu forma de pensar es una ventaja. Esto la activa.</div>
+    <h1 class="reveal d1">
+      Neurohacks OS.<br/>El sistema operativo<br/><i>para hacerte brillar.</i>
+    </h1>
+    <p class="hero-sub reveal d2">
+      Hay una forma de trabajar que sí funciona para tu cabeza. Neurohacks OS es el sistema que la hace posible — una plantilla Notion con IA integrada, construida desde dentro por alguien que también la buscó durante años.
+    </p>
+    <div class="hero-actions reveal d3">
+      <a href="#cta" class="btn btn-accent"><svg class="btn-notion-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.047.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.447-.093-1.961-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.446-1.632z"/></svg>Obtener la plantilla gratis</a>
+      <a href="#how" class="btn btn-ghost">Cómo funciona</a>
+    </div>
+    <p class="hero-fine reveal d4">100% gratis · Notion es gratis · Sin tarjeta · Para siempre</p>
+  </div>
+
+</section>
+
+<!-- TIRED SECTION -->
+<section class="tired">
+  <div class="tired-inner">
+    <span class="tired-label">¿Cansad@ de</span>
+    <div class="tired-slot">
+      <div class="tired-track" id="tired-track">
+        <!-- 2 top pre-roll clones (last 2 real items, so item 0 always has content above) -->
+        <div class="tired-item" aria-hidden="true">listas interminables?</div>
+        <div class="tired-item" aria-hidden="true">sistemas que duran 3 días?</div>
+        <!-- 7 real items (data-real marks them) -->
+        <div class="tired-item" data-real="0">setups complicados?</div>
+        <div class="tired-item" data-real="1">olvidarte de usarlo?</div>
+        <div class="tired-item" data-real="2">procrastinar?</div>
+        <div class="tired-item" data-real="3">no saber cómo priorizar?</div>
+        <div class="tired-item" data-real="4">empezar de cero otra vez?</div>
+        <div class="tired-item" data-real="5">listas interminables?</div>
+        <div class="tired-item" data-real="6">sistemas que duran 3 días?</div>
+        <!-- 3 clones of first items for seamless loop -->
+        <div class="tired-item" data-clone="0">setups complicados?</div>
+        <div class="tired-item" data-clone="1">olvidarte de usarlo?</div>
+        <div class="tired-item" data-clone="2">procrastinar?</div>
+        <!-- 2 bottom padding ghosts -->
+        <div class="tired-item" aria-hidden="true"></div>
+        <div class="tired-item" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr />
+
+<!-- CYCLE -->
+<section class="section">
+  <div class="wrap-wide">
+    <p class="reveal" style="text-align:center; font-size:15px; color:var(--text-3); margin-bottom:20px; letter-spacing:0.04em; text-transform:uppercase; font-weight:700;">Lo que pasa cuando usas herramientas neurotípicas</p>
+    <h2 class="cycle-title reveal">El ciclo que conoces bien</h2>
+    <div class="cycle-cards reveal">
+
+      <!-- Lunes -->
+      <div class="cycle-card">
+        <div class="cc-ring"><div class="cc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M12 3c0 3.5-1.5 5.5-9 9 7.5 3.5 9 5.5 9 9 0-3.5 1.5-5.5 9-9-7.5-3.5-9-5.5-9-9z"/>
+          </svg>
+        </div></div>
+        <div class="cc-day">Lunes</div>
+        <div class="cc-desc">Nuevo sistema.<br/>Esta vez funciona.</div>
+      </div>
+
+      <!-- Martes (oculto en mobile) -->
+      <div class="cycle-card hide-mobile">
+        <div class="cc-ring"><div class="cc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div></div>
+        <div class="cc-day">Martes</div>
+        <div class="cc-desc">Energía al máximo,<br/>todo bajo control.</div>
+      </div>
+
+      <!-- Miércoles -->
+      <div class="cycle-card">
+        <div class="cc-ring"><div class="cc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="9" cy="10" r="0.8" fill="white" stroke="none"/>
+            <circle cx="15" cy="10" r="0.8" fill="white" stroke="none"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+        </div></div>
+        <div class="cc-day">Miércoles</div>
+        <div class="cc-desc">La vida pasa.<br/>Solo una cosa.</div>
+      </div>
+
+      <!-- Viernes -->
+      <div class="cycle-card">
+        <div class="cc-ring"><div class="cc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M8.5 9l1.5 1.5M10 9l-1.5 1.5"/>
+            <path d="M13.5 9l1.5 1.5M15 9l-1.5 1.5"/>
+            <path d="M9 16c0 0 1.2-1.5 3-1.5s3 1.5 3 1.5"/>
+          </svg>
+        </div></div>
+        <div class="cc-day">Viernes</div>
+        <div class="cc-desc">Modo pánico.<br/>Todo acumulado.</div>
+      </div>
+
+      <!-- Próximo lunes -->
+      <div class="cycle-card">
+        <div class="cc-ring"><div class="cc-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 2v6h-6"/>
+            <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+            <path d="M3 22v-6h6"/>
+            <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+          </svg>
+        </div></div>
+        <div class="cc-day">Próximo lunes</div>
+        <div class="cc-desc">De vuelta<br/>al principio.</div>
+      </div>
+
+    </div>
+    <p class="cycle-repeat reveal">↺ Se repite. Semana tras semana.</p>
+    <p class="cycle-pivot reveal">
+      No somos nosotros el problema.<br/>
+      Somos personas usando herramientas que no están diseñadas para nosotros.<br/>
+      Necesitamos un sistema que <em>funcione como nuestro cerebro</em>.
+    </p>
+    <div style="text-align:center" class="reveal d1">
+      <a href="#cta" class="btn btn-accent"><svg class="btn-notion-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.047.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.447-.093-1.961-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.446-1.632z"/></svg>Obtener la plantilla gratis</a>
+    </div>
+  </div>
+</section>
+
+<hr />
+
+<!-- FOUNDER -->
+<section class="founder-section" id="fundador">
+  <div class="founder-content reveal">
+    <div class="founder-tag">Creador de Neurohacks OS</div>
+
+    <blockquote class="founder-quote">
+      "Desde 2010 he liderado equipos de marketing en más de 24 países. Hacía cosas que para otros parecían imposibles — y sin embargo los sistemas que todos usaban nunca terminaban de funcionar para mí. Hasta que descubrí que tengo TDAH. Y por primera vez, todo tuvo sentido."
+    </blockquote>
+    <p class="founder-body">
+      No era un problema mío. Era una incompatibilidad de sistema.<br/><br/>
+      El TDAH es <strong>como ser zurdo en un mundo diseñado para diestros.</strong> No hay nada que arreglar. Solo necesitas las herramientas que entienden cómo piensas.<br/><br/>
+      Construí Neurohacks OS porque no existía. La llevo refinando desde 2010 — y la actualizo cada vez que algo puede funcionar mejor.
+    </p>
+    <div class="founder-creds">
+      <span>SEO · GEO · AI Specialist</span>
+      <span>15+ años · 24 países</span>
+      <span>TDAH diagnosticado en la adultez</span>
+    </div>
+    <div class="founder-name">— Héctor Herrera</div>
+  </div>
+  <div class="founder-photo">
+    <img src="hector-side-web2.jpg.webp" alt="Héctor Herrera — Creador de Neurohacks OS" />
+  </div>
+</section>
+
+<hr />
+
+<!-- DIAGNOSIS / PAIN CARDS -->
+<section class="section diag-bg" id="diagnosis">
+  <div class="wrap-wide">
+    <div class="section-head">
+      <div class="diag-eyebrow reveal">Incompatibilidades del sistema</div>
+      <h2 class="reveal" style="letter-spacing:-0.03em">¿Qué pasa cuando usas<br/>el SO equivocado?</h2>
+      <p class="reveal">Tu cerebro no tiene bugs. Los tienen los sistemas que te han dado. Reconoce el tuyo — y descubre exactamente cómo Neurohacks OS lo resuelve.</p>
+    </div>
+
+    <div class="diag-grid reveal">
+
+      <!-- 01 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="pcard-top">
+          <div class="pcard-left">
+            <div>
+              <div class="pcard-num">Caso 01</div>
+              <div class="pcard-h">Parálisis de inicio</div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-preview">Sabes lo que tienes que hacer. Pero el cuerpo no arranca. El cursor parpadea. Pasan las horas.</div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="sol-tag">Diagnóstico</div>
+            <p class="sol-desc">La parálisis de inicio en el TDAH no es pereza — es una disfunción del sistema de activación. El cerebro TDAH necesita alta urgencia, interés o presión para arrancar, ingredientes que la mayoría de tareas cotidianas no tienen.</p>
+            <div class="sol-tag sol-tag-purple">Solución Neurohacks OS</div>
+            <div class="sol-h">Protocolo de Arranque</div>
+            <ul class="sol-list">
+              <li>Agente IA que descompone cualquier tarea hasta su mínima unidad accionable</li>
+              <li>Ritual de inicio de 2 minutos que activa el sistema de dopamina</li>
+              <li>Temporizadores de arranque cortos (5 min) para superar la inercia inicial</li>
+              <li>Historial de victorias para recordarle al cerebro que sí puede empezar</li>
+            </ul>
+            <div class="sol-note">Neurohacks OS elimina la decisión de "por dónde empiezo" — eso lo hace el sistema por ti.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="pcard-top">
+          <div class="pcard-left">
+            <div>
+              <div class="pcard-num">Caso 02</div>
+              <div class="pcard-h">Inconsistencia crónica</div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-preview">Semana uno: imparable. Semana dos: desapareces. El sistema que construiste el lunes, muerto el jueves.</div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="sol-tag">Diagnóstico</div>
+            <p class="sol-desc">El TDAH altera la regulación del sistema de recompensa — la dopamina escasea cuando una actividad deja de ser nueva. Los sistemas de productividad convencionales ignoran por completo esta realidad.</p>
+            <div class="sol-tag sol-tag-purple">Solución Neurohacks OS</div>
+            <div class="sol-h">Motor de Consistencia</div>
+            <ul class="sol-list">
+              <li>Tracker de hábitos con check-in diario de 2 minutos (sin fricción)</li>
+              <li>Sistema de rachas con tolerancia al fallo incorporada</li>
+              <li>Comunidad de accountability con pares que entienden el TDAH</li>
+              <li>Revisiones mensuales con IA para ajustar el sistema cuando pierde fuerza</li>
+            </ul>
+            <div class="sol-note">La consistencia no es disciplina — es infraestructura. Neurohacks OS es esa infraestructura.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 -->
+      <div class="pcard" onclick="toggleCard(this)">
+        <div class="pcard-top">
+          <div class="pcard-left">
+            <div>
+              <div class="pcard-num">Caso 03</div>
+              <div class="pcard-h">Saturación mental</div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-preview">Tu mente no descansa nunca. Guarda todo, procesa todo, y al final del día estás agotado sin haber hecho casi nada.</div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="sol-tag">Diagnóstico</div>
+            <p class="sol-desc">El cerebro TDAH tiene los bucles abiertos en modo constante. Cada tarea sin cerrar, cada compromiso no registrado y cada idea sin capturar ocupa memoria de trabajo activa. Es como tener 40 pestañas abiertas todo el tiempo.</p>
+            <div class="sol-tag sol-tag-purple">Solución Neurohacks OS</div>
+            <div class="sol-h">Gestor de Carga Cognitiva</div>
+            <ul class="sol-list">
+              <li>Vaciado mental diario en 5 minutos con estructura guiada</li>
+              <li>Sistema de bandeja de entrada para capturar sin procesar en el momento</li>
+              <li>Priorización automática por energía disponible y urgencia real</li>
+              <li>Indicadores de sobrecarga para prevenir el burnout antes de que llegue</li>
+            </ul>
+            <div class="sol-note">Cuando el sistema guarda por ti, tu mente puede por fin soltar.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 (desktop only) -->
+      <div class="pcard pcard-desktop-only" onclick="toggleCard(this)">
+        <div class="pcard-top">
+          <div class="pcard-left">
+            <div>
+              <div class="pcard-num">Caso 04</div>
+              <div class="pcard-h">Ceguera temporal</div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-preview">"Solo son las dos." Son las seis. El tiempo se evapora y no sabes cómo ni cuándo pasó.</div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="sol-tag">Diagnóstico</div>
+            <p class="sol-desc">El cerebro TDAH no percibe el tiempo de forma lineal — vive en "ahora" o "no ahora". Sin marcadores externos, las horas colapsan. Los plazos se sienten lejanos hasta que de repente son urgentes.</p>
+            <div class="sol-tag sol-tag-purple">Solución Neurohacks OS</div>
+            <div class="sol-h">Módulo de Tiempo Visible</div>
+            <ul class="sol-list">
+              <li>Planificación diaria de 10 minutos con agente IA según energía y bloques</li>
+              <li>Time-blocking visual integrado en Notion con alertas de transición</li>
+              <li>Recordatorios de anclaje temporal cada hora durante bloques de trabajo</li>
+              <li>Revisión de fin de día para calibrar la percepción del tiempo real</li>
+            </ul>
+            <div class="sol-note">Hacemos el tiempo concreto, visible y manejable — para que deje de evaporarse.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 05 (desktop only) -->
+      <div class="pcard pcard-desktop-only" onclick="toggleCard(this)">
+        <div class="pcard-top">
+          <div class="pcard-left">
+            <div>
+              <div class="pcard-num">Caso 05</div>
+              <div class="pcard-h">Hiperfocus descontrolado</div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-preview">Te enganchas 5 horas a algo irrelevante y no puedes parar. Luego lo importante sigue sin hacerse.</div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="sol-tag">Diagnóstico</div>
+            <p class="sol-desc">El hiperfocus es la otra cara del TDAH — la capacidad de absorción total en actividades de alto interés. Sin dirección, se convierte en un problema: el tiempo desaparece, las obligaciones se acumulan y el ciclo de culpa se reinicia.</p>
+            <div class="sol-tag sol-tag-purple">Solución Neurohacks OS</div>
+            <div class="sol-h">Canal de Hiperfocus</div>
+            <ul class="sol-list">
+              <li>Bloques de hiperfocus programados para tareas importantes de alto esfuerzo</li>
+              <li>Alertas de salida que te recuerdan cuándo parar sin romper el estado de flow</li>
+              <li>Registro de sesiones para aprender qué activa tu hiperfocus y canalizarlo</li>
+              <li>IA que identifica tus ventanas naturales de hiperfocus y las reserva para el trabajo profundo</li>
+            </ul>
+            <div class="sol-note">El hiperfocus no es un bug — es una superpotencia mal apuntada. Neurohacks OS lo apunta.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 06 (desktop only) -->
+      <div class="pcard pcard-desktop-only" onclick="toggleCard(this)">
+        <div class="pcard-top">
+          <div class="pcard-left">
+            <div>
+              <div class="pcard-num">Caso 06</div>
+              <div class="pcard-h">Procrastinación activa</div>
+            </div>
+          </div>
+          <div class="pcard-toggle">+</div>
+        </div>
+        <div class="pcard-preview">No es que no quieras. Es que empezar se siente imposible aunque el plazo ya esté encima.</div>
+        <div class="pcard-body">
+          <div class="pcard-inner">
+            <div class="sol-tag">Diagnóstico</div>
+            <p class="sol-desc">La procrastinación en el TDAH no es pereza ni falta de voluntad — es una respuesta al estrés anticipatorio y a la dificultad de gestionar el inicio. El cerebro evita la tarea porque predice frustración, no porque no le importe.</p>
+            <div class="sol-tag sol-tag-purple">Solución Neurohacks OS</div>
+            <div class="sol-h">Protocolo Anti-Bloqueo</div>
+            <ul class="sol-list">
+              <li>Agente IA que convierte cualquier tarea intimidante en el primer paso de 5 minutos</li>
+              <li>Técnica de implementación de intenciones: cuándo, dónde y cómo exactamente</li>
+              <li>Sistema de compromisos públicos con la comunidad para crear responsabilidad externa</li>
+              <li>Registro de patrones de bloqueo para anticipar y neutralizarlos antes de que aparezcan</li>
+            </ul>
+            <div class="sol-note">El primer paso es el más difícil. Neurohacks OS se encarga de que siempre sea diminuto.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /diag-grid -->
+  </div>
+</section>
+
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label reveal">Cómo funciona</span>
+      <h2 class="reveal">En marcha en 5 minutos.<br/>Sin configuración. Sin fricción.</h2>
+      <p class="reveal">Pensado para los días en que todo se siente cuesta arriba. Especialmente esos días.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-n">1</div>
+        <div>
+          <h3>Cuéntale a la IA cómo estás hoy. Ella se adapta.</h3>
+          <p>5 preguntas. Tu nivel de energía de hoy. La IA construye tu plan desde ahí — no desde lo que deberías poder hacer.</p>
+        </div>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-n">2</div>
+        <div>
+          <h3>Brain Dump matutino — vacía, la IA organiza</h3>
+          <p>Saca todo lo que tienes en la cabeza. Sin orden, sin estructura. La IA lo convierte en un plan que sabes que puedes cumplir hoy.</p>
+        </div>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-n">3</div>
+        <div>
+          <h3>Trabaja. Tu sistema te mantiene en movimiento.</h3>
+          <p>Bloques cortos con recompensas integradas. Si te dispersas — y vas a dispersarte — el sistema te recoge sin drama y sin sermones.</p>
+        </div>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-n">4</div>
+        <div>
+          <h3>Cada semana ves adónde fue tu energía.</h3>
+          <p>No qué hiciste mal — sino dónde ganaste. Ajustes pequeños, impacto real. El sistema aprende contigo semana a semana.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr />
+
+<!-- TESTIMONIALS -->
+<section class="section testi-bg" id="testimonios">
+  <div class="wrap-wide">
+    <div class="section-head">
+      <span class="label reveal">Testimonios</span>
+      <h2 class="reveal">Personas como tú<br/>que encontraron su sistema</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi reveal">
+        <div class="testi-stars">★ ★ ★ ★ ★</div>
+        <p class="testi-quote">"Llevo 5 años probando apps de productividad. Ninguna entendía que mi cerebro no funciona en línea recta. Neurohacks OS es la primera que lo hace."</p>
+        <div class="testi-author">
+          <div class="testi-av">ML</div>
+          <div>
+            <div class="testi-name">María L.</div>
+            <div class="testi-bio">Diseñadora freelance, TDAH diagnosticado a los 32</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi reveal d1">
+        <div class="testi-stars">★ ★ ★ ★ ★</div>
+        <p class="testi-quote">"El Brain Dump cambió mi vida. Antes pasaba 40 minutos decidiendo qué hacer. Ahora en 2 minutos tengo un plan que sé que voy a poder seguir."</p>
+        <div class="testi-author">
+          <div class="testi-av">CR</div>
+          <div>
+            <div class="testi-name">Carlos R.</div>
+            <div class="testi-bio">Desarrollador, TDAH + ansiedad</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi reveal d2">
+        <div class="testi-stars">★ ★ ★ ★ ★</div>
+        <p class="testi-quote">"Mi psicólogo me la recomendó. Tres semanas después le dije que era lo mejor que había probado junto con la medicación."</p>
+        <div class="testi-author">
+          <div class="testi-av">AS</div>
+          <div>
+            <div class="testi-name">Ana S.</div>
+            <div class="testi-bio">Profesora, TDAH no diagnosticado hasta los 28</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr />
+
+<!-- LEAD MAGNET CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-glow cta-glow-1"></div>
+  <div class="cta-glow cta-glow-2"></div>
+  <div class="wrap">
+    <div class="cta-inner reveal">
+      <div class="cta-label">Neurohacks OS · v1.0</div>
+      <div class="cta-free-badge">Todo gratis · Sin tarjeta · Para siempre</div>
+      <h2 class="cta-title">Tu sistema operativo<br/>+ tu comunidad.<br/>Gratis.</h2>
+      <p class="cta-body">Una plantilla Notion con IA que se adapta a cómo funciona tu cabeza. Y una comunidad de personas como tú — porque todo es más fácil cuando no lo haces solo.</p>
+      <ul class="cta-features">
+        <li>Brain Dump diario guiado</li>
+        <li>Destacado del día</li>
+        <li>Micro-compromiso diario</li>
+        <li>Bloques de trabajo TDAH-friendly</li>
+        <li>Gems y GPTs personalizados para TDAH</li>
+        <li>Feedback semanal automático</li>
+      </ul>
+      <div class="cta-btns">
+        <a href="#" class="btn btn-teal"><svg class="btn-notion-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.047.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.447-.093-1.961-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.446-1.632z"/></svg>Obtener la plantilla gratis</a>
+      </div>
+      <div class="cta-discord">
+        <div class="cta-discord-divider">y además</div>
+        <div class="cta-discord-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;color:#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#eae8f5;margin-bottom:3px;">Comunidad privada — solo para usuarios de la plantilla</div>
+            <div style="font-size:12px;color:#9896ad;line-height:1.5;">Al descargar Neurohacks OS recibirás la invitación para entrar. Un Discord para personas como tú: sin ruido, sin juicios, con gente que entiende.</div>
+          </div>
+        </div>
+      </div>
+      <p class="cta-fine">Sin tarjeta · Gratis para siempre · Notion también es gratis · Descarga instantánea</p>
+    </div>
+  </div>
+</section>
+
+<hr />
+
+<!-- FAQ (2 columnas) -->
+<section class="section" id="faq">
+  <div class="wrap-wide">
+    <div class="section-head">
+      <span class="label reveal">FAQ</span>
+      <h2 class="reveal">Lo que más nos preguntan</h2>
+    </div>
+
+    <div class="faq-grid reveal">
+      <!-- Columna 1 -->
+      <div class="faq-col">
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Qué es Neurohacks OS? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Este sistema está diseñado para personas que ya probaron otros sistemas pero nunca lograron mantenerlos. Te ayuda a gestionar tus tareas, proyectos, objetivos y hábitos. Además, al final de cada semana te da feedback automático mostrándote en qué invertiste tu tiempo y qué puedes hacer mejor.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Qué incluye la versión simple? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Tu centro de mando diario con solo lo esencial:</p>
+            <ul>
+              <li><strong>Brain Dump</strong> — Vacía tu cabeza y lista todo lo que tienes en mente</li>
+              <li><strong>Destacado del día</strong> — Elige la única tarea que más importa hoy</li>
+              <li><strong>Micro-compromiso</strong> — Elige un pequeño paso que sabes que puedes dar</li>
+            </ul>
+            <p>Todo está diseñado para ser simple y ligero. Incluso si nunca usaste Notion, te adaptas en 10–15 minutos. Incluye acceso a nuestros <strong>Gems y GPTs personalizados</strong> para TDAH: asistentes entrenados para desbloquearte cuando no sabes por dónde empezar.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿En qué se diferencia de otros sistemas? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>La mayoría de los sistemas están cargados de detalles innecesarios que se ven bien pero terminan en procrastinación productiva. Neurohacks OS elimina todo lo que no es necesario y te permite ajustar tu nivel de saturación cambiando entre la versión simple y la avanzada.</p>
+            <p>Además, al final de cada semana recibes feedback automático que muestra adónde fue tu tiempo y cómo puedes mejorar la siguiente semana.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Puedo personalizarlo a mi flujo de trabajo? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Absolutamente. El sistema es flexible y está diseñado para crecer contigo.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Necesito saber usar Notion? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>¡Para nada! Solo descarga Notion — es gratis — y empieza con la versión simple. Probablemente ni siquiera necesitarás el tutorial en vídeo, pero por si te pierdes, recibirás una guía paso a paso.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Es realmente gratis? ¿Para siempre? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Sí. Sin tarjeta, sin prueba de 14 días, sin "gratis hasta que no lo sea". Neurohacks OS es gratis porque lo construí para mí y quiero que llegue a quien lo necesita. Si en algún momento hay una versión de pago con funciones extra, la versión core seguirá siendo siempre gratuita.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Hay soporte si tengo preguntas? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Sí. Escríbenos a <strong>soporte@neurohacks.ai</strong> — respondemos en pocos días laborables.</p>
+          </div>
+        </div>
+
+      </div><!-- /col1 -->
+
+      <!-- Columna 2 -->
+      <div class="faq-col">
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Qué recibiré al instalarlo? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Obtienes las versiones Simple y Avanzada como plantillas de Notion, más una guía en vídeo paso a paso. Ambas versiones se sincronizan a la perfección y puedes personalizar todo a tu medida.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Qué incluye la versión avanzada? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Todo lo de la versión simple, MÁS:</p>
+            <ul>
+              <li><strong>Gestión de proyectos:</strong> asigna tareas y haz seguimiento visual con cuenta atrás a los plazos</li>
+              <li><strong>Feedback semanal automático:</strong> distribución de tareas por prioridades y seguimiento de micro-compromisos</li>
+              <li><strong>Revisión semanal guiada:</strong> cierra tareas pendientes y decide qué soltar</li>
+              <li><strong>Sprints:</strong> agrupa tareas en bloques de foco intenso en lugar de time-blocking</li>
+              <li><strong>Registro de estimación de tiempo:</strong> tiempo estimado vs. real — verás que esa tarea que evitas solo lleva 10 minutos</li>
+              <li><strong>Base de datos de proyectos:</strong> calcula cuánto necesitas avanzar cada día para cumplir plazos</li>
+              <li><strong>IA avanzada:</strong> Gems y GPTs de nivel avanzado para planificación profunda y revisiones semanales</li>
+            </ul>
+            <p>Puedes cambiar entre versiones en cualquier momento según tu energía.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Qué es la comunidad privada de Discord? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Al instalar la plantilla te invitamos a un Discord exclusivo para personas neurodivergentes — un espacio sin ruido, sin juicios, donde gente como tú comparte, se apoya y avanza. No es otro grupo de productividad genérico. Es gente que entiende lo que es funcionar diferente porque lo vive.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Cuánto tiempo requiere al día? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Solo 5 minutos al día — un check-in matutino rápido para elegir tu destacado diario y tu micro-compromiso. Incluso la versión avanzada está diseñada para mejorar tu vida, no para consumirla.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">No estoy seguro/a de poder mantenerlo <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Exactamente por eso lo construí. Como persona con TDAH, cuando abandono un método rara vez vuelvo y todo el sistema se convierte en un caos. Pero con esta configuración no hay fricción. Cuando dejo de registrar una temporada y vuelvo, siempre puedo reempezar con la versión simple en lugar de castigarme. Neurohacks OS está construido para personas que lo dejan a los 3 días.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-btn">¿Cómo cambiará mi vida? <span class="faq-icon">+</span></button>
+          <div class="faq-answer">
+            <p>Dejarás de terminar cada semana con la sensación de que no hiciste nada. Empezarás a ver con claridad adónde va tu energía. Tendrás un sistema que no te juzga cuando lo abandonas — y al que siempre puedes volver. Para muchos usuarios es la primera vez que sienten que la productividad trabaja <em>para</em> ellos, no en su contra.</p>
+          </div>
+        </div>
+
+      </div><!-- /col2 -->
+    </div><!-- /faq-grid -->
+  </div>
+</section>
+
+<hr />
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="reveal">Tu sistema operativo.<br/>Tu comunidad.<br/>Tu mejor versión.</h2>
+    <p class="reveal d1">Instala Neurohacks OS hoy. Gratis, sin tarjeta, para siempre.</p>
+    <a href="#cta" class="btn reveal d2"><svg class="btn-notion-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.047.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.447-.093-1.961-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.446-1.632z"/></svg>Obtener la plantilla gratis</a>
+    <p class="final-fine reveal d3">Sé de los primeros. La comunidad está empezando.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap-wide">
+    <div class="footer-inner">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <img src="neurohacks-logo.svg" alt="NeuroHacks OS" height="32" style="display:block;" />
+        <span style="font-size:12px; color:var(--text-3); letter-spacing:0.04em;">· El sistema operativo para cerebros neurodivergentes ·</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+        <a href="#">Contacto</a>
+        <a href="#">Blog</a>
+      </div>
+      <span class="footer-copy">© 2025 Neurohacks.ai</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // ── FAQ ──
+  document.querySelectorAll('.faq-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ── Pain cards ──
+  function toggleCard(card) {
+    const body = card.querySelector('.pcard-body');
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.pcard').forEach(c => {
+      c.classList.remove('open');
+      c.querySelector('.pcard-body').classList.remove('open');
+    });
+    if (!isOpen) {
+      card.classList.add('open');
+      body.classList.add('open');
+      setTimeout(() => body.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+    }
+  }
+
+  // ── Back to top ──
+  const topBtn = document.getElementById('back-top');
+  window.addEventListener('scroll', () => {
+    topBtn.classList.toggle('show', window.scrollY > 400);
+  }, { passive: true });
+
+  // ── Mobile menu ──
+  function toggleMobile() {
+    const menu = document.getElementById('mobile-menu');
+    const ham = document.getElementById('hamburger');
+    const open = menu.classList.toggle('open');
+    ham.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+  function closeMobile() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── Slot machine (seamless loop) ──
+  (function() {
+    const track = document.getElementById('tired-track');
+    if (!track) return;
+    const allItems = track.querySelectorAll('.tired-item');
+    // domIndex 0,1 = top ghosts
+    // domIndex 2..8 = real items (7)
+    // domIndex 9..11 = clones of real[0..2]
+    // domIndex 12,13 = bottom ghosts
+    const REAL_START = 2; // dom index of first real item
+    const REAL_COUNT = 7;
+    const LOOP_JUMP_DOM = 9; // dom index of clone[0] — after this, reset
+
+    let domCurrent = REAL_START; // start with real item 0 centered
+
+    function ih() {
+      return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ih')) || 58;
+    }
+
+    function setActive(domIdx) {
+      allItems.forEach((el, i) => {
+        // match real index: real items 2-8, clones 9-11 map to real 0-2
+        const realIdx = i >= REAL_START && i < REAL_START + REAL_COUNT
+          ? i - REAL_START
+          : i >= LOOP_JUMP_DOM && i < LOOP_JUMP_DOM + 3
+            ? i - LOOP_JUMP_DOM
+            : -1;
+        const activeDomRealIdx = domIdx >= REAL_START && domIdx < REAL_START + REAL_COUNT
+          ? domIdx - REAL_START
+          : domIdx >= LOOP_JUMP_DOM
+            ? domIdx - LOOP_JUMP_DOM
+            : -1;
+        el.classList.toggle('is-active', realIdx !== -1 && realIdx === activeDomRealIdx);
+      });
+    }
+
+    function moveTo(domIdx, animate) {
+      const offset = -(domIdx - REAL_START) * ih();
+      track.style.transition = animate ? 'transform 0.52s cubic-bezier(0.4,0,0.2,1)' : 'none';
+      track.style.transform = `translateY(${offset}px)`;
+      setActive(domIdx);
+    }
+
+    moveTo(domCurrent, false);
+
+    setInterval(() => {
+      domCurrent++;
+      moveTo(domCurrent, true);
+
+      // After animating to the last clone (clone[0] = domIndex 9),
+      // wait for transition then silently reset to real item 0
+      if (domCurrent === LOOP_JUMP_DOM) {
+        setTimeout(() => {
+          domCurrent = REAL_START;
+          moveTo(domCurrent, false);
+        }, 560); // slightly after transition ends
+      }
+    }, 2000);
+  })();
+
+  // ── Nav shadow ──
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.borderBottomColor = window.scrollY > 10 ? '#ddd' : 'var(--border)';
+  }, { passive: true });
+
+  // ── Scrollspy ──
+  const spySections = ['diagnosis','how','testimonios','cta','faq'];
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const spyObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  spySections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) spyObs.observe(el);
+  });
+</script>
+</body>
+</html>
