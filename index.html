@@ -14,7 +14,7 @@
   <meta name="twitter:description" content="Plantilla Notion con IA para adultos con TDAH. Construida por alguien con TDAH. Gratis para siempre." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Playfair+Display:ital,wght@1,700;1,800;1,900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -210,7 +210,25 @@
     }
 
     /* ── HERO ── */
-    .hero { padding: 96px 0 0; text-align: center; }
+    .hero {
+      padding: 60px 0;
+      min-height: calc(100vh - 60px);
+      display: flex; flex-direction: column; justify-content: center;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    #hero-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 24%, transparent 36%, transparent 64%, black 76%, black 93%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 7%, black 24%, transparent 36%, transparent 64%, black 76%, black 93%, transparent 100%);
+    }
+    @media (max-width: 1024px) { #hero-canvas { display: none; } }
+    .hero .wrap { position: relative; z-index: 2; }
+    .hero-vfade {
+      position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background:
+        linear-gradient(to bottom, white 0%, transparent 18%, transparent 82%, white 100%);
+    }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 8px;
       font-size: 11px; font-weight: 600; color: var(--text-3);
@@ -226,7 +244,7 @@
       line-height: 1.08; letter-spacing: -0.04em;
       color: var(--text); margin-bottom: 20px;
     }
-    .hero h1 i { font-style: italic; color: var(--accent); }
+    .hero h1 i { font-style: italic; color: var(--accent); font-weight: 900; }
     .hero-sub {
       font-size: clamp(16px, 2vw, 19px); color: var(--text-2);
       max-width: 520px; margin: 0 auto 36px;
@@ -900,6 +918,8 @@
 
 <!-- HERO -->
 <section class="hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <div class="hero-vfade" aria-hidden="true"></div>
   <div class="wrap">
     <div class="hero-eyebrow reveal">Tu forma de pensar es una ventaja. Esto la activa.</div>
     <h1 class="reveal d1">
@@ -1657,6 +1677,96 @@
   window.addEventListener('scroll', () => {
     nav.style.borderBottomColor = window.scrollY > 10 ? '#ddd' : 'var(--border)';
   }, { passive: true });
+
+  // ── Hero neural canvas ──
+  (function() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const NODE_COUNT = 140;
+    const NODE_R_MIN = 2.5;
+    const NODE_R_MAX = 5.5;
+    const LINK_DIST  = 320;
+    let W, H, nodes = [];
+
+    function resize() {
+      const hero = canvas.parentElement;
+      W = canvas.width  = hero.offsetWidth;
+      H = canvas.height = hero.offsetHeight;
+    }
+
+    function makeNodes() {
+      const half = Math.floor(NODE_COUNT / 2);
+      const cols = 5, rows = Math.ceil(half / cols);
+      const sideW = W * 0.36;
+
+      function gridNodes(offsetX, count) {
+        return Array.from({length: count}, (_, i) => {
+          const col = i % cols, row = Math.floor(i / cols);
+          const cellW = sideW / cols, cellH = H / rows;
+          const cx = offsetX + col * cellW + cellW * 0.2 + Math.random() * cellW * 0.6;
+          const cy = row * cellH + cellH * 0.2 + Math.random() * cellH * 0.6;
+          const orbitR = 20 + Math.random() * 55;
+          return {
+            cx, cy, orbitR,
+            angle: Math.random() * Math.PI * 2,
+            speed: (0.006 + Math.random() * 0.010) * (Math.random() < 0.5 ? 1 : -1),
+            r:     NODE_R_MIN + Math.random() * (NODE_R_MAX - NODE_R_MIN),
+            phase: Math.random() * Math.PI * 2,
+            get x() { return this.cx + Math.cos(this.angle) * this.orbitR; },
+            get y() { return this.cy + Math.sin(this.angle) * this.orbitR; },
+          };
+        });
+      }
+
+      nodes = [
+        ...gridNodes(0, half),
+        ...gridNodes(W - sideW, NODE_COUNT - half),
+      ];
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, W, H);
+
+      // All-to-all connections within LINK_DIST
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const d  = Math.sqrt(dx*dx + dy*dy);
+          if (d < LINK_DIST) {
+            const a = (1 - d / LINK_DIST) * 0.38;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(100,100,120,${a})`;
+            ctx.lineWidth = 0.7;
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Nodes
+      nodes.forEach(n => {
+        const pulse = 0.7 + 0.3 * Math.sin(t * 0.0007 + n.phase);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * pulse, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(90,90,115,${0.65 * pulse})`;
+        ctx.fill();
+      });
+    }
+
+    function tick(t) {
+      nodes.forEach(n => { n.angle += n.speed; });
+      draw(t);
+      requestAnimationFrame(tick);
+    }
+
+    resize();
+    makeNodes();
+    requestAnimationFrame(tick);
+    window.addEventListener('resize', () => { resize(); makeNodes(); }, { passive: true });
+  })();
 
   // ── Scrollspy ──
   const spySections = ['diagnosis','how','testimonios','cta','faq'];
